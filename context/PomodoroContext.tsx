@@ -102,6 +102,18 @@ export function PomodoroProvider({ children }: PomodoroProviderProps) {
     });
   }, [currentMode, pomodoroTime, shortBreakTime, longBreakTime]);
 
+  useEffect(() => {
+    const currentDuration = durations[currentMode];
+
+    setTimeLeft((prev) => {
+      if (prev < currentDuration) {
+        return currentDuration;
+      }
+
+      return prev;
+    });
+  }, [currentMode, pomodoroTime, shortBreakTime, longBreakTime]);
+
   // countdown
   useEffect(() => {
     if (!isRunning) return;
