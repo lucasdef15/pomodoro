@@ -10,22 +10,16 @@ import {
 } from "react";
 
 import { useSettings } from "./SettingsContext";
-
 import type { TimerMode } from "@/types/timer";
 
 type PomodoroContextValue = {
   currentMode: TimerMode;
-
   timeLeft: number;
-
   isRunning: boolean;
-
   progress: number;
-
   startTimer: () => void;
   pauseTimer: () => void;
   resetTimer: () => void;
-
   changeMode: (mode: TimerMode) => void;
 };
 
@@ -38,83 +32,58 @@ type PomodoroProviderProps = {
 export function PomodoroProvider({ children }: PomodoroProviderProps) {
   const { pomodoroTime, shortBreakTime, longBreakTime } = useSettings();
 
-  // durações em segundos
-  const durations: Record<TimerMode, number> = {
-    pomodoro: pomodoroTime * 60,
-    shortBreak: shortBreakTime * 60,
-    longBreak: longBreakTime * 60,
-  };
+  const durations: Record<TimerMode, number> = useMemo(
+    () => ({
+      pomodoro: pomodoroTime * 60,
+      shortBreak: shortBreakTime * 60,
+      longBreak: longBreakTime * 60,
+    }),
+    [pomodoroTime, shortBreakTime, longBreakTime],
+  );
 
   const [currentMode, setCurrentMode] = useState<TimerMode>("pomodoro");
-
   const [timeLeft, setTimeLeft] = useState(durations.pomodoro);
-
   const [isRunning, setIsRunning] = useState(false);
 
-  // duração total do modo atual
   const totalTime = durations[currentMode];
 
-  // progresso %
   const progress = useMemo(() => {
-    return (timeLeft / totalTime) * 100;
+    return totalTime > 0 ? (timeLeft / totalTime) * 100 : 100;
   }, [timeLeft, totalTime]);
 
-  // iniciar timer
   const startTimer = () => {
     if (timeLeft <= 0) {
       setTimeLeft(totalTime);
     }
-
     setIsRunning(true);
   };
 
-  // pausar timer
   const pauseTimer = () => {
     setIsRunning(false);
   };
 
-  // resetar timer
   const resetTimer = () => {
     setTimeLeft(durations[currentMode]);
-
     setIsRunning(false);
   };
 
-  // trocar modo
   const changeMode = (mode: TimerMode) => {
     setCurrentMode(mode);
-
     setTimeLeft(durations[mode]);
-
     setIsRunning(false);
   };
 
-  // sincroniza tempo caso settings diminuam
   useEffect(() => {
     const currentDuration = durations[currentMode];
 
     setTimeLeft((prev) => {
-      if (prev > currentDuration) {
+      if (prev > currentDuration || prev < currentDuration) {
         return currentDuration;
       }
-
       return prev;
     });
-  }, [currentMode, pomodoroTime, shortBreakTime, longBreakTime]);
+  }, [currentMode, durations]);
 
-  useEffect(() => {
-    const currentDuration = durations[currentMode];
-
-    setTimeLeft((prev) => {
-      if (prev < currentDuration) {
-        return currentDuration;
-      }
-
-      return prev;
-    });
-  }, [currentMode, pomodoroTime, shortBreakTime, longBreakTime]);
-
-  // countdown
   useEffect(() => {
     if (!isRunning) return;
 
@@ -122,36 +91,28 @@ export function PomodoroProvider({ children }: PomodoroProviderProps) {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-
           setIsRunning(false);
 
           setCurrentMode("pomodoro");
-
           return durations.pomodoro;
         }
-
         return prev - 1;
       });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isRunning, durations]);
+  }, [isRunning, totalTime, durations.pomodoro]);
 
   return (
     <PomodoroContext.Provider
       value={{
         currentMode,
-
         timeLeft,
-
         isRunning,
-
         progress,
-
         startTimer,
         pauseTimer,
         resetTimer,
-
         changeMode,
       }}
     >

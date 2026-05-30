@@ -9,7 +9,7 @@ export default function AppWrapper({ children }: { children: ReactNode }) {
   const fontClasses: Record<string, string> = {
     kumbh: "font-theme-kumbh",
     roboto: "font-theme-roboto",
-    mono: "font-theme-mono",
+    mono: "font-theme-space",
   };
 
   const colorClasses = {
