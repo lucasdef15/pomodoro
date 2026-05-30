@@ -12,8 +12,11 @@ import {
 import FontSettings from "./FontSettings";
 import ColorSettings from "./ColorSettings";
 import TimerSettings from "./TimerSettings";
+import { usePomodoro } from "@/context/PomodoroContext";
 
 const SettingsContent = () => {
+  const { resetTimer } = usePomodoro();
+
   return (
     <DialogContent className="sm:max-w-[540px] bg-white text-blue-950 rounded-[25px] p-8 border-none overflow-visible">
       <DialogHeader className="border-b border-gray-100 pb-6">
@@ -26,13 +29,8 @@ const SettingsContent = () => {
       </DialogHeader>
 
       <div className="py-6 flex flex-col gap-6">
-        {/* SEÇÃO: TIME */}
         <TimerSettings />
-
-        {/* SEÇÃO: FONT */}
         <FontSettings />
-
-        {/* SEÇÃO: COLOR */}
         <ColorSettings />
       </div>
 
@@ -40,6 +38,7 @@ const SettingsContent = () => {
         <DialogClose asChild>
           <Button
             type="button"
+            onClick={resetTimer}
             className="bg-red-400 hover:bg-red-400/90 text-white font-bold px-12 py-6 rounded-full absolute -bottom-6 left-1/2 -translate-x-1/2 transition-colors cursor-pointer"
           >
             Apply
