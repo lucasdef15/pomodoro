@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⏳ Pomodoro Timer
 
-## Getting Started
+Um aplicativo de Pomodoro Timer moderno, limpo e focado em produtividade. Desenvolvido com **Next.js (App Router)**, **React**, **TypeScript** e estilizado com **Tailwind CSS** e componentes acessíveis da **Radix UI**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Tecnologias Utilizadas
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Core
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework:** [Next.js](https://nextjs.org/) (v16.x) - App Router
+- **Biblioteca Principal:** [React](https://react.dev/) (v19)
+- **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Estilização & UI
 
-## Learn More
+- **CSS Framework:** [Tailwind CSS](https://tailwindcss.com/) (v4)
+- **Componentes Primitivos:** [Radix UI](https://www.radix-ui.com/) & [Shadcn UI](https://ui.shadcn.com/)
+- **Ícones:** [Lucide React](https://lucide.dev/)
+- **Utilidades CSS:** `clsx`, `tailwind-merge`, e `class-variance-authority`
 
-To learn more about Next.js, take a look at the following resources:
+### Testes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Runner:** [Vitest](https://vitest.dev/)
+- **Ambiente & Matchers:** [Testing Library (React & Jest-DOM)](https://testing-library.com/) e `jsdom`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📁 Estrutura do Projeto
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+A organização das pastas e arquivos do projeto segue a estrutura padrão do Next.js App Router:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+````text
+├── app/                    # Rotas, layouts e páginas da aplicação
+│   ├── globals.css         # Estilos globais do Tailwind
+│   ├── layout.tsx          # Layout principal
+│   └── page.tsx            # Página inicial do Pomodoro
+├── components/             # Componentes reutilizáveis de UI
+│   ├── tabSelector/        # Seleção de abas/modos do timer (Pomodoro, Pausa Curta, etc.)
+│   ├── ui/                 # Componentes base (Shadcn/Radix)
+│   └── AppWrapper.tsx      # Wrapper global da aplicação
+├── context/                # Gerenciamento de Estado Global
+│   ├── PomodoroContext.tsx # Estado do Timer, contagem regressiva e modos
+│   └── SettingsContext.tsx # Configurações e preferências do usuário
+├── lib/                    # Funções utilitárias e helpers de configuração
+│   └── utils.ts
+├── types/                  # Tipagens do TypeScript
+│   └── timer.ts            # Definições de tipos do Timer (TimerMode, etc.)
+├── utils/                  # Funções auxiliares com testes unitários
+│   ├── formatTime.ts       # Função de formatação do tempo (MM:SS)
+│   └── formatTime.test.ts  # Testes da função de formatação
+└── package.json            # Scripts e dependências do projeto
+```text
+````
